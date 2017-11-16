@@ -1,0 +1,2 @@
+# slog
+secure logging library
