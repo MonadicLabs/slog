@@ -1,0 +1,10 @@
+
+#include <stdio.h>
+
+#include <slog.h>
+
+int main( int argc, char** argv )
+{
+	foo();
+	return 0;
+}
