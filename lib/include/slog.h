@@ -16,14 +16,28 @@ typedef struct slog
 
 } slog_t;
 
+typedef struct slog_error_report
+{
+
+    char expected_hmac[128];
+    char computed_hmac[128];
+    char plain_text_entry[1024];
+    int line_number;
+
+} slog_error_report_t;
+
 slog_t * slog_new(char * file_path, slog_key_t *secret_key);
 slog_t * slog_open(char * file_path, slog_key_t *secret_key);
+void slog_close( slog_t* s );
 
 void slog_store( char * plain_text, slog_t *ctx );
 
-void slog_validate(char * file_path, slog_key_t* secret_key);
+int slog_validate(char *file_path, slog_key_t *secret_key, slog_error_report_t errors[], int errors_size );
 
 void __advance( slog_t* ctx );
+int __countlines(char* filename );
+void strip(char *s);
+
 slog_t * slog_init( slog_key_t* secret_key );
 
 #endif

@@ -3,36 +3,39 @@
 
 #include <slog.h>
 
+#include "termcolor.h"
+
 int main( int argc, char** argv )
 {
-    foo();
 
-    slog_key_t * key = slog_key_new( "novadempscouille" );
-    void * poo = 0;
+    if( argc != 3 )
+        return -1;
 
-    /*
-    if( atoi(argv[1]) == 0 )
-        poo = slog_new( "/tmp/couille.txt", key );
-    else if( atoi(argv[1]) == 1 )
-        poo = slog_open( "/tmp/couille.txt", key );
-    int k = 0;
-    for( k = 0; k < 100; ++k )
-        slog_store( "ENCULEZdkgfkfdjglk", poo );
+    slog_key_t * key = slog_key_new( argv[2] );
 
-    */
+    slog_error_report_t errors[1024];
+    int num_errors = slog_validate( argv[1], key, errors, 1024 );
 
-    int num_errors;
-    key = slog_key_new( "novadempscouille" );
-    slog_validate( "/tmp/couille.txt", key );
-
-    printf( "num_errors=%d\n", num_errors );
-    /*
     int j = 0;
     for( j = 0; j < num_errors; ++j )
     {
-        printf( "Found eroneous entry in line: %d \n", errors[j] );
+        slog_error_report_t rep = errors[j];
+        printf( "LINE %d got ", rep.line_number );
+        fgColor(RED);
+        printf( "%s", rep.computed_hmac );
+        fgColor(DEFAULT);
+        printf( " but should have been " );
+        fgColor(GREEN);
+        printf( "%s", rep.expected_hmac );
+        fgColor(DEFAULT);
+        printf( "\n" );
+
+        printf( "entry incriminated: ");
+        textBold(TRUE);
+        printf( "%s", rep.plain_text_entry );
+        textBold(FALSE);
+        printf("\n\n");
     }
-    */
 
     return 0;
 }
