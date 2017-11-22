@@ -1,3 +1,0 @@
-[submodule "lib/extdeps/mbedtls"]
-	path = lib/extdeps/mbedtls
-	url = https://github.com/ARMmbed/mbedtls.git
