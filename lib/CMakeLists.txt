@@ -9,10 +9,10 @@ INCLUDE_DIRECTORIES(${LIBSLOG_SOURCE_DIR}/extdeps/concurrentqueue)
 # SET( CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -std=c99" )
 
 # mBed TLS
-add_subdirectory( extdeps/mbedtls )
-INCLUDE_DIRECTORIES( ${LIBSLOG_SOURCE_DIR}/extdeps/mbedtls/include )
-LINK_DIRECTORIES( ${LIBSLOG_BINARY_DIR}/extdeps/mbedtls/library )
-set( DEPS "${DEPS};mbedtls;mbedcrypto" )
+file (GLOB_RECURSE MBEDTLS_SRC ${LIBSLOG_SOURCE_DIR}/extdeps/mbedtls/*.c )
+INCLUDE_DIRECTORIES( ${LIBSLOG_SOURCE_DIR}/extdeps/ )
+# LINK_DIRECTORIES( ${LIBSLOG_BINARY_DIR}/extdeps/mbedtls/library )
+# set( DEPS "${DEPS};mbedtls;mbedcrypto" )
 
 # Heatshrink
 INCLUDE_DIRECTORIES( ${LIBSLOG_SOURCE_DIR}/extdeps/heatshrink )
@@ -22,9 +22,9 @@ file (GLOB_RECURSE HEATSHRINK_SRC ${LIBSLOG_SOURCE_DIR}/extdeps/heatshrink/heats
 file (GLOB_RECURSE SLOG_SRC ${LIBSLOG_SOURCE_DIR}/src/*.c)
 file (GLOB_RECURSE SLOG_HEADERS ${LIBSLOG_SOURCE_DIR}/include/*.h)
 
-add_library(slog STATIC ${SLOG_SRC} ${SLOG_HEADERS} ${POPOPO} ${HEATSHRINK_SRC} )
-add_dependencies( slog mbedtls )
-add_dependencies( slog mbedcrypto )
+add_library(slog STATIC ${SLOG_SRC} ${SLOG_HEADERS} ${POPOPO} ${HEATSHRINK_SRC} ${MBEDTLS_SRC} )
 
+# add_dependencies( slog mbedtls )
+# add_dependencies( slog mbedcrypto )
 
 target_link_libraries( slog ${DEPS} )
