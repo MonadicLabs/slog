@@ -14,7 +14,7 @@ int main( int argc, char** argv )
     slog_key_t * key = slog_key_new( argv[2] );
 
     slog_error_report_t errors[1024];
-    int num_errors = slog_validate( argv[1], key, errors, 1024 );
+    int num_errors = slog_validate_file( argv[1], key, errors, 1024 );
 
     int j = 0;
     for( j = 0; j < num_errors; ++j )

@@ -2,5 +2,6 @@
 #define CONFIG_H
 
 #define SLOG_RETAINED_HMAC_LEN 16
+#define SLOG_HAVE_FILESYSTEM_SUPPORT
 
 #endif // CONFIG_H

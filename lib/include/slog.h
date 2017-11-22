@@ -4,15 +4,28 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "slog_config.h"
 #include "key.h"
+
+typedef enum slog_output_type
+{
+    SLOG_OUTPUT_FILE = 0,
+    SLOG_OUTPUT_MEM
+} slog_output_type_t;
 
 typedef struct slog
 {
 
-    char *      file_path;
-    uint8_t *   next_s;
-    int         next_s_size;
-    FILE*       _file;
+    char *              file_path;
+    uint8_t *           next_s;
+    int                 next_s_size;
+#ifdef SLOG_HAVE_FILESYSTEM_SUPPORT
+    FILE*               _file;
+#else
+    void *              _output;
+    int                 _outputsize;
+#endif
+    slog_output_type_t  type;
 
 } slog_t;
 
@@ -26,18 +39,19 @@ typedef struct slog_error_report
 
 } slog_error_report_t;
 
-slog_t * slog_new(char * file_path, slog_key_t *secret_key);
-slog_t * slog_open(char * file_path, slog_key_t *secret_key);
-void slog_close( slog_t* s );
-
-void slog_store( char * plain_text, slog_t *ctx );
-
-int slog_validate(char *file_path, slog_key_t *secret_key, slog_error_report_t errors[], int errors_size );
-
-void __advance( slog_t* ctx );
+#ifdef SLOG_HAVE_FILESYSTEM_SUPPORT
+slog_t * slog_new_file(char * file_path, slog_key_t *secret_key);
+slog_t * slog_open_file(char * file_path, slog_key_t *secret_key);
+int slog_validate_file(char *file_path, slog_key_t *secret_key, slog_error_report_t errors[], int errors_size );
 int __countlines(char* filename );
-void strip(char *s);
+#endif
 
 slog_t * slog_init( slog_key_t* secret_key );
+slog_t * slog_new( void* output_buffer, int buffer_size, slog_key_t* secret_key );
+void slog_close( slog_t* s );
+int slog_store( char * plain_text, slog_t *ctx );
+
+void __advance( slog_t* ctx );
+void strip(char *s);
 
 #endif

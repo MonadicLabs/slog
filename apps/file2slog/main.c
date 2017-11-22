@@ -1,6 +1,8 @@
 
 #include <slog.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 int main( int argc, char** argv )
 {
@@ -8,7 +10,7 @@ int main( int argc, char** argv )
         return -1;
 
     slog_key_t * key = slog_key_new( argv[3] );
-    slog_t * myslog = slog_new( argv[2], key );
+    slog_t * myslog = slog_new_file( argv[2], key );
 
     char *line = NULL;
     size_t len = 0;
