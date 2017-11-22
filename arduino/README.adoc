@@ -1,0 +1,7 @@
+= slog Library for Arduino =
+
+Allows to use slog (forward integrity logging) library on Arduino.
+
+== License ==
+
+GPLv3

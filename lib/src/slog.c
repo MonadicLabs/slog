@@ -162,6 +162,8 @@ int __countlines(char* filename)
 
 int slog_store(char *plain_text, slog_t *ctx)
 {
+    int retc = -1;
+
     strip( plain_text );
 
     unsigned char * hmac_s = hmac( (unsigned char*)ctx->next_s, (unsigned char*)plain_text );
@@ -174,7 +176,7 @@ int slog_store(char *plain_text, slog_t *ctx)
 #ifdef SLOG_HAVE_FILESYSTEM_SUPPORT
     if( ctx->type == SLOG_OUTPUT_FILE )
     {
-        fprintf( ctx->_file, "%s|%s\n", b64out, plain_text );
+        retc = fprintf( ctx->_file, "%s|%s\n", b64out, plain_text );
     }
     else
     {
@@ -183,7 +185,7 @@ int slog_store(char *plain_text, slog_t *ctx)
 #else
     if( ctx->type == SLOG_OUTPUT_MEM )
     {
-        sprintf( (char*)ctx->_output, "%s|%s\n", b64out, plain_text );
+        retc = sprintf( (char*)ctx->_output, "%s|%s", b64out, plain_text );
     }
     else
     {
@@ -195,6 +197,8 @@ int slog_store(char *plain_text, slog_t *ctx)
 
     // Advance Sk
     __advance( ctx );
+
+    return retc;
 
 }
 
@@ -248,6 +252,11 @@ slog_t *slog_new(void *output_buffer, int buffer_size, slog_key_t *secret_key)
     slog_key_free( secret_key );
 
     s->type = SLOG_OUTPUT_MEM;
+
+#ifndef SLOG_HAVE_FILESYSTEM_SUPPORT
+    s->_output = output_buffer;
+    s->_outputsize = buffer_size;
+#endif
 
     return s;
 }
