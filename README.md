@@ -1,12 +1,6 @@
-# slog
-secure logging library
+# slog: secure logging library
 
 This is loosely based on:
-@inproceedings{holt2006logcrypt,
-  title={Logcrypt: forward security and public verification for secure audit logs},
-  author={Holt, Jason E},
-  booktitle={Proceedings of the 2006 Australasian workshops on Grid computing and e-research-Volume 54},
-  pages={203--211},
-  year={2006},
-  organization={Australian Computer Society, Inc.}
-}
+[Logcrypt: forward security and public verification for secure audit logs](https://eprint.iacr.org/2005/002.pdf)
+
+It gives the possibility of protecting a text-file such as a log from tampering (except for truncation :/). It should compile on x86/ARM and Arduino-based platforms.
